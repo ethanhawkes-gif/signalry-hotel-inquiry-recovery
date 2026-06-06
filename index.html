@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Wedge — Inquiry Recovery Report</title>
+<style>
+  :root {
+    --navy: #1a2332;
+    --teal: #0d7d6b;
+    --teal-light: #12a88e;
+    --teal-dim: #0a5c50;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --green: #22c55e;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-900: #111827;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 0 1.5rem;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--teal);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .brand-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-sub {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .header-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0.5rem 0;
+  }
+
+  .tab {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .tab.active {
+    color: white;
+    border-bottom-color: var(--teal-light);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0d2231 100%);
+    color: white;
+    padding: 3.5rem 1.5rem 4rem;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(13, 125, 107, 0.3);
+    border: 1px solid rgba(13, 125, 107, 0.6);
+    color: var(--teal-light);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 span { color: var(--teal-light); }
+
+  .hero-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat-item {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--teal-light);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.25rem;
+  }
+
+  /* ── UPLOAD SECTION ── */
+  .upload-section {
+    background: white;
+    border-radius: 16px;
+    max-width: 640px;
+    margin: -2rem auto 0;
+    padding: 2rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    position: relative;
+    z-index: 10;
+  }
+
+  .upload-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    text-align: center;
+  }
+
+  .upload-sub {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .upload-option {
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .upload-option:hover {
+    border-color: var(--teal);
+    background: rgba(13, 125, 107, 0.04);
+  }
+
+  .upload-option.selected {
+    border-color: var(--teal);
+    background: rgba(13, 125, 107, 0.06);
+  }
+
+  .upload-option-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .upload-option-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .upload-option-desc {
+    font-size: 0.72rem;
+    color: var(--gray-400);
+    line-height: 1.4;
+  }
+
+  .upload-drop-zone {
+    border: 2px dashed var(--gray-200);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--gray-400);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: none;
+  }
+
+  .upload-drop-zone:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  .upload-drop-zone.active-drop {
+    display: block;
+  }
+
+  #csv-file-input { display: none; }
+
+  .connect-panel {
+    display: none;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--gray-50);
+  }
+
+  .connect-panel.show { display: block; }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .connect-button {
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    border-radius: 8px;
+    padding: 0.8rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .connect-button:hover,
+  .connect-button.selected {
+    border-color: var(--teal);
+    color: var(--teal-dim);
+    background: rgba(13, 125, 107, 0.06);
+  }
+
+  .connect-note {
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .upload-options,
+    .connect-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .property-name-row {
+    margin-bottom: 1rem;
+  }
+
+  .property-name-row input {
+    width: 100%;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .property-name-row input:focus {
+    border-color: var(--teal);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover { background: var(--teal-light); }
+
+  .btn-primary:disabled {
+    background: var(--gray-200);
+    color: var(--gray-400);
+    cursor: not-allowed;
+  }
+
+  .upload-note {
+    font-size: 0.72rem;
+    color: var(--gray-400);
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+
+  /* ── LOADING ── */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 35, 50, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.25rem;
+    color: white;
+    text-align: center;
+  }
+
+  .loading-overlay.show { display: flex; }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: var(--teal-light);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .loading-step {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    transition: color 0.3s;
+  }
+
+  .loading-step.active {
+    color: var(--teal-light);
+    font-weight: 600;
+  }
+
+  .loading-step.done { color: rgba(255,255,255,0.8); }
+
+  /* ── REPORT ── */
+  #report-section { display: none; }
+
+  .report-header {
+    background: var(--navy);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .report-header-left h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .report-header-left p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 0.2rem;
+  }
+
+  .report-header-badge {
+    background: var(--teal);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.35rem 0.8rem;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── METRICS GRID ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  @media (min-width: 600px) {
+    .metrics-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .metric-cell {
+    padding: 1.25rem 1rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .metric-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.35rem;
+  }
+
+  .metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .metric-value.red { color: #f87171; }
+  .metric-value.amber { color: var(--amber); }
+  .metric-value.green { color: var(--green); }
+
+  .metric-sub {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.3rem;
+  }
+
+  /* ── SECTION ── */
+  .report-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── QUEUE ── */
+  .queue-section {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    margin-bottom: 1.25rem;
+  }
+
+  .queue-header {
+    padding: 1rem 1.25rem;
+    background: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .queue-header-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .queue-header-sub {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .queue-item {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--gray-100);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    align-items: start;
+    transition: background 0.12s;
+  }
+
+  .queue-item:hover { background: var(--gray-50); }
+  .queue-item:last-child { border-bottom: none; }
+
+  .queue-item-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .queue-item-meta {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+  }
+
+  .queue-item-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag-hot { background: #fee2e2; color: #b91c1c; }
+  .tag-warm { background: #fef3c7; color: #92400e; }
+  .tag-cold { background: var(--gray-100); color: var(--gray-600); }
+
+  .queue-item-right {
+    text-align: right;
+  }
+
+  .queue-item-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  .queue-item-lag {
+    font-size: 0.72rem;
+    color: var(--red);
+  }
+
+  .queue-item-action {
+    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .action-badge {
+    font-size: 0.7rem;
+    background: rgba(13, 125, 107, 0.1);
+    color: var(--teal);
+    border: 1px solid rgba(13, 125, 107, 0.25);
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    font-weight: 600;
+  }
+
+  /* ── RECOMMENDATION ── */
+  .rec-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: white;
+  }
+
+  .rec-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.5rem;
+  }
+
+  .rec-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .rec-body {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+
+  .rec-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-rec-primary {
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-rec-primary:hover { background: var(--teal-light); }
+
+  .btn-rec-secondary {
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-rec-secondary:hover {
+    color: white;
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  /* ── PILOT ECONOMICS ── */
+  .economics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    .economics-grid { grid-template-columns: 1fr; }
+  }
+
+  .economics-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+
+  .econ-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-400);
+    margin-bottom: 0.4rem;
+  }
+
+  .econ-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+  }
+
+  .econ-value.green { color: var(--teal); }
+
+  .econ-sub {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 0.3rem;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps-list {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    margin-bottom: 1.25rem;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--gray-100);
+    align-items: flex-start;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .step-content h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .step-content p {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+  }
+
+  /* ── CTA FOOTER ── */
+  .report-cta {
+    background: var(--teal);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+  }
+
+  .report-cta h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .report-cta p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-cta-white {
+    background: white;
+    color: var(--teal);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-cta-white:hover { opacity: 0.9; }
+
+  .btn-cta-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-cta-outline:hover { border-color: white; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  /* ── MISC ── */
+  .divider {
+    text-align: center;
+    color: var(--gray-400);
+    font-size: 0.8rem;
+    margin: 0.75rem 0;
+    position: relative;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 1.5rem);
+    height: 1px;
+    background: var(--gray-200);
+  }
+
+  .divider::before { left: 0; }
+  .divider::after { right: 0; }
+
+  .csv-format-hint {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    display: none;
+  }
+
+  .csv-format-hint.show { display: block; }
+
+  .csv-format-hint code {
+    font-family: monospace;
+    background: var(--gray-100);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">🏨</div>
+      <div>
+        <div class="brand-name">Hotel Wedge</div>
+        <div class="brand-sub">by Signalry</div>
+      </div>
+    </div>
+    <div style="font-size:0.8rem; color:rgba(255,255,255,0.5);">Pilot-ready · v1</div>
+  </div>
+  <div class="header-tabs">
+    <div class="tab active">Field Ops</div>
+    <div class="tab">Clinic Front Desk</div>
+  </div>
+</header>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <div style="font-weight:700; font-size:1rem;">Running inquiry audit…</div>
+  <div class="loading-steps">
+    <div class="loading-step" id="step-1">📥 Ingesting inquiry data</div>
+    <div class="loading-step" id="step-2">🔍 Scoring leads by recovery value</div>
+    <div class="loading-step" id="step-3">🤖 Generating follow-up recommendations</div>
+    <div class="loading-step" id="step-4">💰 Calculating revenue leakage</div>
+    <div class="loading-step" id="step-5">✅ Building your recovery queue</div>
+  </div>
+</div>
+
+<!-- UPLOAD FLOW -->
+<div id="upload-flow">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Hospitality · Independent Hotels</div>
+    <h1>Recover hotel inquiries<br>before they book <span>somewhere else.</span></h1>
+    <p class="hero-sub">Chipper watches your messy commercial edge — group blocks, retreat inquiries, catering quotes — and surfaces every opportunity worth saving.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">$18.5k</div>
+        <div class="hero-stat-label">Avg recoverable pipeline</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">6.7h</div>
+        <div class="hero-stat-label">Typical response lag</div>
+      </div>
+      <div class="hero-stat-item">
+        <div class="hero-stat-num">33</div>
+        <div class="hero-stat-label">Hot leads missed/month</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD CARD -->
+  <div style="padding: 0 1rem 3rem; background: linear-gradient(to bottom, #0d2231 0, #0d2231 120px, var(--gray-50) 120px);">
+    <div class="upload-section">
+      <div class="upload-title">Get your free recovery report</div>
+      <div class="upload-sub">Takes 15 seconds. No account required.</div>
+
+      <div class="property-name-row">
+        <input type="text" id="property-name" placeholder="Property name (e.g. The Ashford Inn)" />
+      </div>
+
+      <div class="upload-options">
+        <div class="upload-option selected" id="opt-demo" onclick="selectMode('demo')">
+          <div class="upload-option-icon">⚡</div>
+          <div class="upload-option-label">Demo report</div>
+          <div class="upload-option-desc">See a real example instantly — no data needed</div>
+        </div>
+        <div class="upload-option" id="opt-csv" onclick="selectMode('csv')">
+          <div class="upload-option-icon">📊</div>
+          <div class="upload-option-label">Upload my data</div>
+          <div class="upload-option-desc">CSV export from your PMS, email, or spreadsheet</div>
+        </div>
+        <div class="upload-option" id="opt-connect" onclick="selectMode('connect')">
+          <div class="upload-option-icon">🔐</div>
+          <div class="upload-option-label">Connect account</div>
+          <div class="upload-option-desc">Authorize email, form, or PMS access for a live audit</div>
+        </div>
+      </div>
+
+      <div class="upload-drop-zone" id="drop-zone" onclick="document.getElementById('csv-file-input').click()">
+        <div style="font-size:2rem; margin-bottom:0.5rem;">📁</div>
+        <div style="font-weight:600; margin-bottom:0.3rem;">Drop your CSV here, or click to browse</div>
+        <div style="font-size:0.75rem; color:var(--gray-400);" id="file-name-display">No file selected</div>
+      </div>
+      <input type="file" id="csv-file-input" accept=".csv,.xlsx,.xls" onchange="handleFileSelect(this)">
+
+      <div class="csv-format-hint" id="csv-hint">
+        Expected columns (any order): <code>inquiry_date</code>, <code>guest_name</code>, <code>event_type</code>, <code>estimated_value</code>, <code>responded</code> (yes/no), <code>response_date</code>, <code>status</code>. Extra columns are ignored.
+      </div>
+
+      <div class="connect-panel" id="connect-panel">
+        <div class="connect-grid">
+          <button class="connect-button" type="button" onclick="selectConnection(this, 'Gmail')">Gmail inbox</button>
+          <button class="connect-button" type="button" onclick="selectConnection(this, 'Outlook')">Outlook inbox</button>
+          <button class="connect-button" type="button" onclick="selectConnection(this, 'PMS')">PMS / form feed</button>
+        </div>
+        <div class="connect-note" id="connect-note">Prototype mode: choose a source to preview the account-access flow. Production would use scoped OAuth/read-only access and generate this same report from live inquiries.</div>
+      </div>
+
+      <div class="divider" style="margin: 1rem 0;"></div>
+
+      <button class="btn-primary" id="run-btn" onclick="runAnalysis()">
+        ⚡ Generate My Recovery Report
+      </button>
+
+      <p class="upload-note">Your data never leaves this page. Analysis runs entirely in your browser.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- REPORT SECTION -->
+<div id="report-section">
+
+  <!-- REPORT HEADER METRICS -->
+  <div class="report-header">
+    <div class="report-header-left">
+      <h2 id="report-property-name">The Ashford Inn</h2>
+      <p id="report-date">Recovery Report · <span id="report-date-str"></span></p>
+    </div>
+    <div class="report-header-badge">Pilot-ready mockup</div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-cell">
+      <div class="metric-label">Open Leakage</div>
+      <div class="metric-value red" id="m-leakage">$18.5k</div>
+      <div class="metric-sub">Recoverable pipeline</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Hot Leads</div>
+      <div class="metric-value amber" id="m-hot">33</div>
+      <div class="metric-sub">Event/group inquiries</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Response Lag</div>
+      <div class="metric-value" id="m-lag">6.7h</div>
+      <div class="metric-sub">Avg across all inquiries</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-label">Recovery Target</div>
+      <div class="metric-value green" id="m-target">$6.8k</div>
+      <div class="metric-sub">Conservative first-month</div>
+    </div>
+  </div>
+
+  <div class="report-body">
+
+    <!-- RECOVERY QUEUE -->
+    <div class="section-title">Hotel Inquiry Recovery Queue</div>
+    <div class="queue-section" id="queue-section">
+      <div class="queue-header">
+        <div>
+          <div class="queue-header-title">Hospitality sample data</div>
+          <div class="queue-header-sub">Ranked by recovery value · Human-approved before send</div>
+        </div>
+      </div>
+      <div id="queue-items"></div>
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <div class="section-title">Recommended Next Move</div>
+    <div class="rec-box" id="rec-box">
+      <div class="rec-label">Chipper Recommendation</div>
+      <div class="rec-title" id="rec-title">Corporate retreat inquiry</div>
+      <div class="rec-body" id="rec-body">
+        Group asked about 18 rooms and dinner package. No response in 22 hours. Send a high-touch reply with room block options and two menu package options — this is an $9,200 opportunity with a 72-hour window before they go elsewhere.
+      </div>
+      <div class="rec-actions">
+        <button class="btn-rec-primary">Approve follow-up</button>
+        <button class="btn-rec-secondary">Escalate to operator</button>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section-title">How the Hotel Pilot Works</div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Capture</h4>
+          <p>Connect email, intake form, or PMS. Chipper reads all inbound hotel inquiries — group blocks, retreat, catering, catering quotes, and event leads.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Score</h4>
+          <p>Each inquiry gets a recovery value: lead age, booking value, event type, and current status. Hot leads surface in under 60 seconds.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Draft</h4>
+          <p>Generate a follow-up that matches the hotel's voice and the guest's actual request. Proposal, room block, menu package — whatever fits.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Approve</h4>
+          <p>Human operator or GM reviews and edits before anything goes out. Nothing sends automatically — you stay in control.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Measure</h4>
+          <p>Track replies, appointments, bookings, and recovered revenue weekly. Every dollar attributed back to the inquiry source.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PILOT ECONOMICS -->
+    <div class="section-title">Pilot Economics</div>
+    <div class="economics-grid">
+      <div class="economics-card">
+        <div class="econ-label">Average recovered booking</div>
+        <div class="econ-value">$3,200</div>
+        <div class="econ-sub">Adjustable estimate based on your mix</div>
+      </div>
+      <div class="economics-card">
+        <div class="econ-label">Monthly recovered bookings</div>
+        <div class="econ-value">2</div>
+        <div class="econ-sub">Conservative first-month target</div>
+      </div>
+      <div class="economics-card">
+        <div class="econ-label">Monthly recovered revenue</div>
+        <div class="econ-value green" id="m-monthly-revenue">$9,600</div>
+        <div class="econ-sub">At 3 recovered bookings/month</div>
+      </div>
+      <div class="economics-card">
+        <div class="econ-label">Sellable pilot offer</div>
+        <div class="econ-value">v1</div>
+        <div class="econ-sub">1 inbox · 1 weekly report · 1 approval queue</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="report-cta">
+      <h3>Ready to recover what's slipping through?</h3>
+      <p>Five recoverable assets identified at <span id="cta-property-name">your property</span>. We'll set up a live pilot in 48 hours.</p>
+      <div class="cta-buttons">
+        <button class="btn-cta-white" onclick="openCalendly()">Schedule a 15-min call</button>
+        <button class="btn-cta-outline" onclick="startOver()">← Run another property</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Hotel Wedge v1 · Powered by Signalry · Your data stays in your browser · No account required
+  </footer>
+
+</div>
+
+<script>
+// ── STATE ──
+let currentMode = 'demo';
+let uploadedFile = null;
+let selectedConnection = null;
+
+const DEMO_DATA = {
+  propertyName: null,
+  leakage: '$18.5k',
+  hot: 33,
+  lag: '6.7h',
+  target: '$6.8k',
+  monthlyRevenue: '$9,600',
+  leads: [
+    {
+      title: 'Corporate retreat inquiry',
+      meta: 'Asked about 18 rooms and dinner package · No response in 22 hours',
+      tag: 'hot',
+      tagLabel: 'Hot',
+      value: '$9,200',
+      lag: '22h no response',
+      action: 'High-touch reply — room block + 2 menu packages'
+    },
+    {
+      title: 'Wedding welcome dinner',
+      meta: 'Partner inquired patio availability · Checked in, no reply yet',
+      tag: 'hot',
+      tagLabel: 'Hot',
+      value: '$4,100',
+      lag: '18h no callback',
+      action: 'Availability confirmation + outdoor package pricing'
+    },
+    {
+      title: 'Repeat guest recovery',
+      meta: 'Bad reviews mentions no callback after reservation issue',
+      tag: 'warm',
+      tagLabel: 'Warm',
+      value: '$1,250',
+      lag: '3 days',
+      action: 'Recovery offer — 1 comp night or upgrade'
+    },
+    {
+      title: 'Catering quote follow-up',
+      meta: 'Proposal sent five days ago with no follow-up sequence',
+      tag: 'warm',
+      tagLabel: 'Warm',
+      value: '$3,950',
+      lag: '5 days stale',
+      action: 'Deadline nudge — "your date is still available"'
+    }
+  ],
+  recTitle: 'Corporate retreat inquiry — $9,200 at risk',
+  recBody: 'Group asked about 18 rooms and dinner package. No response in 22 hours. Send a high-touch reply with room block options and two menu package options. This opportunity has a 72-hour window before they book elsewhere.'
+};
+
+// ── MODE SELECTION ──
+function selectMode(mode) {
+  currentMode = mode;
+  document.getElementById('opt-demo').classList.toggle('selected', mode === 'demo');
+  document.getElementById('opt-csv').classList.toggle('selected', mode === 'csv');
+  document.getElementById('opt-connect').classList.toggle('selected', mode === 'connect');
+
+  const dropZone = document.getElementById('drop-zone');
+  const hint = document.getElementById('csv-hint');
+  const connectPanel = document.getElementById('connect-panel');
+  if (mode === 'csv') {
+    dropZone.classList.add('active-drop');
+    hint.classList.add('show');
+  } else {
+    dropZone.classList.remove('active-drop');
+    hint.classList.remove('show');
+  }
+  connectPanel.classList.toggle('show', mode === 'connect');
+}
+
+function selectConnection(button, source) {
+  selectedConnection = source;
+  document.querySelectorAll('.connect-button').forEach(btn => btn.classList.remove('selected'));
+  button.classList.add('selected');
+  document.getElementById('connect-note').textContent = `${source} selected. For this prototype, generate a sample live-access report now; production would request read-only authorization before analysis.`;
+}
+
+// ── FILE HANDLING ──
+function handleFileSelect(input) {
+  if (input.files && input.files[0]) {
+    uploadedFile = input.files[0];
+    document.getElementById('file-name-display').textContent = uploadedFile.name;
+  }
+}
+
+// Drag and drop
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--teal)'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--gray-200)'; });
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.style.borderColor = 'var(--gray-200)';
+  if (e.dataTransfer.files[0]) {
+    uploadedFile = e.dataTransfer.files[0];
+    document.getElementById('file-name-display').textContent = uploadedFile.name;
+    document.getElementById('csv-file-input').files = e.dataTransfer.files;
+  }
+});
+
+// ── ANALYSIS ──
+async function runAnalysis() {
+  const propertyName = document.getElementById('property-name').value.trim() || 'Your Property';
+
+  // Show loading
+  document.getElementById('loading-overlay').classList.add('show');
+
+  const steps = ['step-1','step-2','step-3','step-4','step-5'];
+  for (let i = 0; i < steps.length; i++) {
+    await sleep(420 + Math.random() * 200);
+    if (i > 0) document.getElementById(steps[i-1]).classList.add('done');
+    document.getElementById(steps[i]).classList.add('active');
+  }
+  await sleep(500);
+
+  let reportData;
+  if (currentMode === 'csv' && uploadedFile) {
+    reportData = await parseCSV(uploadedFile, propertyName);
+  } else if (currentMode === 'connect') {
+    reportData = {
+      ...DEMO_DATA,
+      propertyName,
+      recTitle: `${selectedConnection || 'Connected source'} audit — $9,200 at risk`,
+      recBody: `${selectedConnection || 'Account'} access would scan recent inquiry threads, form submissions, and event follow-up gaps. Prototype report uses representative hospitality data until OAuth/PMS access is connected.`
+    };
+  } else {
+    reportData = { ...DEMO_DATA, propertyName };
+  }
+
+  renderReport(reportData);
+
+  document.getElementById('loading-overlay').classList.remove('show');
+  document.getElementById('upload-flow').style.display = 'none';
+  document.getElementById('report-section').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── CSV PARSER ──
+async function parseCSV(file, propertyName) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const text = e.target.result;
+      const rows = text.trim().split('\n').map(r => r.split(',').map(c => c.trim().replace(/^"|"$/g, '')));
+      if (rows.length < 2) { resolve({ ...DEMO_DATA, propertyName }); return; }
+
+      const headers = rows[0].map(h => h.toLowerCase());
+      const colIdx = key => headers.findIndex(h => h.includes(key));
+
+      const valueIdx = colIdx('value') !== -1 ? colIdx('value') : colIdx('revenue');
+      const respondedIdx = colIdx('respond');
+      const eventIdx = colIdx('event') !== -1 ? colIdx('event') : colIdx('type');
+      const nameIdx = colIdx('name') !== -1 ? colIdx('name') : colIdx('guest');
+      const dateIdx = colIdx('date');
+
+      const dataRows = rows.slice(1).filter(r => r.length > 1);
+      const now = new Date();
+
+      const leads = [];
+      let totalLeakage = 0;
+      let totalLag = 0;
+      let lagCount = 0;
+
+      for (const row of dataRows) {
+        const name = nameIdx >= 0 ? row[nameIdx] : 'Unknown Guest';
+        const eventType = eventIdx >= 0 ? row[eventIdx] : 'Inquiry';
+        const rawValue = valueIdx >= 0 ? parseFloat(row[valueIdx].replace(/[$,]/g, '')) : 0;
+        const responded = respondedIdx >= 0 ? row[respondedIdx].toLowerCase() : 'no';
+        const inquiryDate = dateIdx >= 0 ? new Date(row[dateIdx]) : new Date(now - Math.random() * 7 * 86400000);
+
+        const lagHours = isNaN(inquiryDate) ? 0 : Math.round((now - inquiryDate) / 3600000);
+        const notResponded = responded === 'no' || responded === 'false' || responded === '';
+
+        if (notResponded && rawValue > 0) {
+          totalLeakage += rawValue;
+          totalLag += lagHours;
+          lagCount++;
+
+          const urgency = lagHours > 48 ? 'cold' : lagHours > 12 ? 'warm' : 'hot';
+          leads.push({
+            title: `${eventType} — ${name}`,
+            meta: `${lagHours > 0 ? lagHours + 'h ago' : 'recent'} · No response sent`,
+            tag: urgency,
+            tagLabel: urgency.charAt(0).toUpperCase() + urgency.slice(1),
+            value: '$' + rawValue.toLocaleString(),
+            lag: lagHours + 'h no response',
+            action: urgency === 'hot' ? 'Immediate follow-up recommended' : 'Schedule follow-up sequence'
+          });
+        }
+      }
+
+      leads.sort((a, b) => parseFloat(b.value.replace(/[$,]/g,'')) - parseFloat(a.value.replace(/[$,]/g,'')));
+
+      const leakage = totalLeakage > 0 ? '$' + Math.round(totalLeakage / 1000 * 10) / 10 + 'k' : DEMO_DATA.leakage;
+      const avgLag = lagCount > 0 ? Math.round(totalLag / lagCount * 10) / 10 + 'h' : DEMO_DATA.lag;
+      const target = totalLeakage > 0 ? '$' + Math.round(totalLeakage * 0.37 / 100) * 100 : DEMO_DATA.target;
+      const hotCount = leads.filter(l => l.tag === 'hot').length || DEMO_DATA.hot;
+
+      resolve({
+        propertyName,
+        leakage,
+        hot: hotCount,
+        lag: avgLag,
+        target,
+        monthlyRevenue: leads.length > 0 ? '$' + Math.round(totalLeakage * 0.37 / 3).toLocaleString() : DEMO_DATA.monthlyRevenue,
+        leads: leads.length > 0 ? leads.slice(0, 6) : DEMO_DATA.leads,
+        recTitle: leads.length > 0 ? leads[0].title : DEMO_DATA.recTitle,
+        recBody: leads.length > 0
+          ? `${leads[0].meta}. This is your highest-value recovery opportunity. A personalized follow-up now has a strong chance of converting before they book elsewhere.`
+          : DEMO_DATA.recBody
+      });
+    };
+    reader.readAsText(file);
+  });
+}
+
+// ── RENDER ──
+function renderReport(data) {
+  document.getElementById('report-property-name').textContent = data.propertyName || 'Your Property';
+  document.getElementById('report-date-str').textContent = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+  document.getElementById('cta-property-name').textContent = data.propertyName || 'your property';
+
+  document.getElementById('m-leakage').textContent = data.leakage;
+  document.getElementById('m-hot').textContent = data.hot;
+  document.getElementById('m-lag').textContent = data.lag;
+  document.getElementById('m-target').textContent = data.target;
+  document.getElementById('m-monthly-revenue').textContent = data.monthlyRevenue;
+
+  document.getElementById('rec-title').textContent = data.recTitle;
+  document.getElementById('rec-body').textContent = data.recBody;
+
+  const queueEl = document.getElementById('queue-items');
+  queueEl.innerHTML = '';
+  for (const lead of data.leads) {
+    queueEl.innerHTML += `
+      <div class="queue-item">
+        <div>
+          <div class="queue-item-title">${escapeHtml(lead.title)}</div>
+          <div class="queue-item-meta">${escapeHtml(lead.meta)}</div>
+          <div class="queue-item-action">
+            <span class="queue-item-tag tag-${lead.tag}">${escapeHtml(lead.tagLabel)}</span>
+            <span class="action-badge">${escapeHtml(lead.action)}</span>
+          </div>
+        </div>
+        <div class="queue-item-right">
+          <div class="queue-item-value">${escapeHtml(lead.value)}</div>
+          <div class="queue-item-lag">${escapeHtml(lead.lag)}</div>
+        </div>
+      </div>`;
+  }
+}
+
+// ── UTILS ──
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function startOver() {
+  document.getElementById('report-section').style.display = 'none';
+  document.getElementById('upload-flow').style.display = '';
+  document.getElementById('property-name').value = '';
+  document.getElementById('file-name-display').textContent = 'No file selected';
+  uploadedFile = null;
+  selectedConnection = null;
+  document.querySelectorAll('.connect-button').forEach(btn => btn.classList.remove('selected'));
+  selectMode('demo');
+  // Reset loading steps
+  ['step-1','step-2','step-3','step-4','step-5'].forEach(id => {
+    document.getElementById(id).classList.remove('active','done');
+  });
+  window.scrollTo(0, 0);
+}
+
+function openCalendly() {
+  alert('Calendly link — add your booking URL here when you go live.');
+}
+
+// Set today's date
+document.getElementById('report-date-str').textContent = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+</script>
+</body>
+</html>
