@@ -942,8 +942,8 @@
         </div>
         <div class="upload-option" id="opt-connect" onclick="selectMode('connect')">
           <div class="upload-option-icon">🔐</div>
-          <div class="upload-option-label">Connect account</div>
-          <div class="upload-option-desc">Authorize email, form, or PMS access for a live audit</div>
+          <div class="upload-option-label">Live access</div>
+          <div class="upload-option-desc">Preview Gmail, Outlook, or PMS audit coverage</div>
         </div>
       </div>
 
@@ -964,7 +964,7 @@
           <button class="connect-button" type="button" onclick="selectConnection(this, 'Outlook')">Outlook inbox</button>
           <button class="connect-button" type="button" onclick="selectConnection(this, 'PMS')">PMS / form feed</button>
         </div>
-        <div class="connect-note" id="connect-note">Prototype mode: choose a source to preview the account-access flow. Production would use scoped OAuth/read-only access and generate this same report from live inquiries.</div>
+        <div class="connect-note" id="connect-note">Choose a source to preview the live-access audit. Full account connection uses scoped, read-only authorization during onboarding.</div>
       </div>
 
       <div class="divider" style="margin: 1rem 0;"></div>
@@ -988,7 +988,7 @@
       <h2 id="report-property-name">The Ashford Inn</h2>
       <p id="report-date">Recovery Report · <span id="report-date-str"></span></p>
     </div>
-    <div class="report-header-badge">Pilot-ready mockup</div>
+    <div class="report-header-badge">Immediate recovery report</div>
   </div>
 
   <div class="metrics-grid">
@@ -1204,7 +1204,7 @@ function selectConnection(button, source) {
   selectedConnection = source;
   document.querySelectorAll('.connect-button').forEach(btn => btn.classList.remove('selected'));
   button.classList.add('selected');
-  document.getElementById('connect-note').textContent = `${source} selected. For this prototype, generate a sample live-access report now; production would request read-only authorization before analysis.`;
+  document.getElementById('connect-note').textContent = `${source} selected. This preview shows the same recovery report format produced from scoped, read-only access during onboarding.`;
 }
 
 // ── FILE HANDLING ──
